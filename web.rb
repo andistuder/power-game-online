@@ -1,16 +1,16 @@
 require 'sinatra'
+require 'haml'
+require File.join(File.dirname(__FILE__), 'tweet_store')
 
 configure do
-  require 'redis'
-  if ENV["REDISTOGO_URL"]
-    uri = URI.parse(ENV["REDISTOGO_URL"])
-    REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
-  else
-    REDIS = Redis.new
-  end
-  REDIS.set("user", "world")
+  STORE = TweetStore.new
 end
 
 get '/' do
-  "Hello #{REDIS.get("user")}"
+  "Hello, world."
+end
+
+get '/power' do
+  @power_tweets = STORE.tweets
+  haml :index
 end
