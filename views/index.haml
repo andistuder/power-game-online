@@ -1,16 +1,16 @@
--#:javascript
--#  function refreshTweets() {
--#    $.get('/latest', {since: window.latestTweet}, function(data) {
--#      $('.tweets').prepend(data);
--#      $('.latest').slideDown('slow');
--#      $('.tweets li:gt(50)').remove();
--#
--#      setTimeout(refreshTweets, 10000);
--#    });
--#  }
--#  $(function() {
--#    setTimeout(refreshTweets, 10000);
--#  });
+:javascript
+  function refreshTweets() {
+    $.get('/latest', {since: window.latestTweet}, function(data) {
+      $('.tweets').prepend(data);
+      $('.latest').slideDown('slow');
+      $('.tweets li:gt(50)').remove();
+
+      setTimeout(refreshTweets, 10000);
+    });
+  }
+  $(function() {
+    setTimeout(refreshTweets, 10000);
+  });
   
 %h1 Recent POWER Tweets
 %ul.tweets

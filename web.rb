@@ -14,3 +14,9 @@ get '/power' do
   @power_tweets = STORE.tweets
   haml :index
 end
+
+get '/latest' do
+  @power_tweets = STORE.tweets(5, (params[:since] || 0).to_i)
+  @tweet_class = 'latest'
+  haml :tweets, :layout => false
+end
