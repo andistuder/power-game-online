@@ -8,8 +8,9 @@ configure do
   else
     REDIS = Redis.new
   end
+  REDIS.set("user", "world")
 end
 
 get '/' do
-  "Hello, world"
+  "Hello #{REDIS.get("user")}"
 end
