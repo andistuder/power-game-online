@@ -27,10 +27,26 @@ class TweetStore
   def push(data)
     @db.lpush(REDIS_KEY, data.to_json)
     @trim_count += 1
-    if (@trim_count > TRIM_THRESHOLD)
+    if @trim_count > TRIM_THRESHOLD
       @db.ltrim(REDIS_KEY, 0, NUM_TWEETS)
       @trim_count = 20
     end
+    if data["username"] == "PGOtest"
+      @db.set('croupier', data.to_json)
+      puts "PGO tweet received"
+    end
+  end
+
+  def get_croupier_tweet
+    Tweet.new(JSON.parse(@db.get('croupier')))
+  end
+
+  def get_tweet_data(limit=15, since=0)
+    #"hello"
+    #@db.lrange(REDIS_KEY, 0, limit - 1)
+    @db.lrange(REDIS_KEY, 0, limit - 1).reject {|t|
+      #puts JSON.parse(t)
+      JSON.parse(t)["received_at"] <= since}
   end
 
 end

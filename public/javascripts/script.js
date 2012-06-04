@@ -58,7 +58,7 @@ function searchTweet(string, check){
 
 function renderCroupierTweet(tweet){
 		//console.log(tweet);
-  		html = '<p><a href="http://twitter.com/' + tweet.user.screen_name + '" class="username" target="_blank">'+ tweet.user.screen_name +'</a> ';
+  		html = '<p><a href="http://twitter.com/' + tweet.username + '" class="username" target="_blank">'+ tweet.username +'</a> ';
   		//html += container[twitterlib].ify.clean(tweet.text);
   		html += tweet.text;
   		html += '</p>';
@@ -66,13 +66,14 @@ function renderCroupierTweet(tweet){
 };
 
 function renderPlayerTweet($column, tweet){
-
+//    console.log(tweet)
 	var html = '<div class="player">';
-	html += '<img class="avatar" alt="' + tweet.user.name + '" height="30" width="30" src="' + tweet.user.profile_image_url + '" width="48" />';  
-	html += '<p class="player-tweet"><a href="http://twitter.com/' + tweet.user.screen_name + '" ';
-	html += 'class="username" title="' + tweet.user.name + '">';
-	html += tweet.user.screen_name + '</a> ';
-	html += twitterlib.ify.clean(tweet.text);
+	html += '<img class="avatar" alt="' + tweet.name + '" height="30" width="30" src="' + tweet.profile_image_url + '" width="48" />';
+	html += '<p class="player-tweet"><a href="http://twitter.com/' + tweet.username + '" ';
+	html += 'class="username" title="' + tweet.name + '">';
+	html += tweet.username + '</a> ';
+	html += tweet.text
+//	html += twitterlib.ify.clean(tweet.text); TODO maybe we need this?
 	html += '</p>';
 
 	//update tweet id to last tweet id rendered to ensure we look for "new" tweets
@@ -93,7 +94,8 @@ function renderPlayerTweet($column, tweet){
 	
 	var cards = {};
 	cards = {
-		words : null,
+		words : ['war', 'love', 'live'],
+//		words : null, TODO change back
 		placeholder : $('#populate'),
 		$cardword : $('.card-word'),
 		croupierTweetId : null,
@@ -116,12 +118,13 @@ function renderPlayerTweet($column, tweet){
 			if(stop == true){return false};
 			
 						
-			var url = 'http://api.twitter.com/1/statuses/user_timeline.json?';
-			url += 'screen_name=powergameonline&count=1&page=1&include_rts=false';
-			
-			if(cards.croupierTweetId != null){
-				url += '&since_id='+cards.croupierTweetId;
-			}
+//			var url = 'http://api.twitter.com/1/statuses/user_timeline.json?';
+//			url += 'screen_name=powergameonline&count=1&page=1&include_rts=false';
+//
+//			if(cards.croupierTweetId != null){
+//				url += '&since_id='+cards.croupierTweetId;
+//			}
+            var url = 'http://localhost:9393/croupier-tweet'
 			
 			/** test rate limiting - seems to fail if requested from jquery :'( **/
 			/*
@@ -145,8 +148,8 @@ function renderPlayerTweet($column, tweet){
 						showInfo("rate limit hit");
 					}
 				},
-				complete : function(tweet){
-					if(tweet.statusText == 'error'){
+				complete : function(r_tweet){
+					if(r_tweet.statusText == 'error'){
 						showInfo("rate limit has been hit... game should come back online in 15 minutes");
 						cards.stopPublicSearch();
 						cards.stopPlayers();
@@ -154,9 +157,8 @@ function renderPlayerTweet($column, tweet){
 					} else {
 			
 				// FOR TESTING USE THIS - var tweet = $.parseJSON(croupier_test);
-						//console.log(tweet[0]);
+                        var tweet = [$.parseJSON(r_tweet.responseText)];
 						var	mostRecent = $.trim(tweet[0].text);
-						
 						//set croupier tweet id to most recent
 						cards.croupierTweetId = tweet[0].id;
 						
@@ -191,7 +193,7 @@ function renderPlayerTweet($column, tweet){
 							log('Searching for croupier key words, couldn\'nt find anything...');
 						}
 						//one minute search timeout
-						setTimeout(function(){cards.getCroupierTweet()},60e3);
+						setTimeout(function(){cards.getCroupierTweet()},5e3);
 					
 					
 					}
@@ -268,10 +270,26 @@ function renderPlayerTweet($column, tweet){
 			log("starting players");
 			
 			setTimeout(function(){
+                    $.ajax({
+       			 	url: 'http://localhost:9393/player-tweets',
+       			 	dataType : "json",
+       				statusCode : {
+       					400 : function(){
+       						showInfo("rate limit hit");
+       					}
+       				},
+       				complete : function(player_tweets){
+//                           console.log("Andi");
+//                           console.log(player_tweets.responseText);
+//                           console.log($.parseJSON(player_tweets.responseText));
+                           var tweet_array = $.parseJSON(player_tweets.responseText)
+                           cards.filterPlayerTweets(tweet_array);
+                       }
+                    });
 			//get players timeline
-				twitterlib.list('powergameonline/power-game-online-players', 
-					{ filter: '-R OR -via', since: cards.playersTweetId }, cards.filterPlayerTweets);
-			},60e3); // 60e3 wait a minute before checking for nominations
+//				twitterlib.list('powergameonline/power-game-online-players',
+//					{ filter: '-R OR -via', since: cards.playersTweetId }, cards.filterPlayerTweets);
+			},20e3); // 60e3 wait a minute before checking for nominations
 			
 			// Add a loop in here.
 			return setTimeout(function(){cards.startPlayers()},100e3);
@@ -286,14 +304,17 @@ function renderPlayerTweet($column, tweet){
 			//Loop through results and assign votes to each word
 				//TODO make less stupid
 			for(i=0;i<results.length;i++){
-				if(searchTweet(results[i].text, "#"+words[0])){
-					renderPlayerTweet($pCol1, results[i]);
+
+                var result = $.parseJSON(results[i]);
+
+				if(searchTweet(result.text, "#"+words[0])){
+					renderPlayerTweet($pCol1, result);
 				}
-				if(searchTweet(results[i].text, "#"+words[1])){
-					renderPlayerTweet($pCol2, results[i]);
+				if(searchTweet(result.text, "#"+words[1])){
+					renderPlayerTweet($pCol2, result);
 				}
-				if(searchTweet(results[i].text, "#"+words[2])){
-					renderPlayerTweet($pCol3, results[i]);
+				if(searchTweet(result.text, "#"+words[2])){
+					renderPlayerTweet($pCol3, result);
 				}
 			}
 			
@@ -309,7 +330,7 @@ function renderPlayerTweet($column, tweet){
 			//get public search
 				twitterlib.search(words[0] + ' OR ' + words[1] + ' OR ' + words[2] + ' OR #powergameonline', 
 				{ since: cards.searchTweetId }, cards.checkVotes);
-			},30e3); // 30 second timeout	
+			},30e3); // 30 second timeout
 			
 			return setTimeout(function(){cards.startPublicSearch(words,stop);},30e3); //30 second timeout
 						
@@ -415,7 +436,7 @@ function renderPlayerTweet($column, tweet){
 
 function init(){
 	showInfo("Ready to start...");
-	setTimeout(function(){cards.getCroupierTweet()},10e3);
+	setTimeout(function(){cards.getCroupierTweet()},1e3);
 }
 
 init();

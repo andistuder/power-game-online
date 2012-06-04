@@ -7,7 +7,9 @@ configure do
 end
 
 get '/' do
+  #@croupier_tweet = STORE.get_croupier_tweet
   haml :index
+
 end
 
 get '/power' do
@@ -26,4 +28,14 @@ get '/credits' do
 end
 get '/how-to-play' do
   haml :how_to_play
+end
+
+get '/croupier-tweet' do
+  STORE.get_croupier_tweet.jasonize
+  #TODO make this a bit smarter
+end
+
+get '/player-tweets' do
+  #@tweets = []
+  STORE.get_tweet_data(5, (params[:since] || 0).to_i).to_json
 end

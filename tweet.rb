@@ -14,6 +14,10 @@ class Tweet
     #filter_lol(filter_urls(text))
   end
 
+  def jasonize
+    @data.to_json
+  end
+
   private
 
   # So we can call tweet.text instead of tweet['text']
