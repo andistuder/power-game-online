@@ -79,7 +79,7 @@ function renderPlayerTweet($column, tweet){
 	//update tweet id to last tweet id rendered to ensure we look for "new" tweets
 	//console.log(cards.playersTweetId, "before");
 
-	cards.playersTweetId = tweet.id;
+	cards.playersTweetId = tweet.received_at;
 	
 	//console.log(cards.playersTweetId, "after");
 
@@ -272,7 +272,7 @@ function renderPlayerTweet($column, tweet){
 			
 			setTimeout(function(){
                     $.ajax({
-       			 	url: 'http://localhost:9393/player-tweets',
+       			 	url: 'http://localhost:9393/player-tweets?since=' + cards.playersTweetId,
        			 	dataType : "json",
        				statusCode : {
        					400 : function(){
@@ -287,6 +287,7 @@ function renderPlayerTweet($column, tweet){
                            cards.filterPlayerTweets(tweet_array);
                        }
                     });
+                console.log(cards.playersTweetId);
 			//get players timeline
 //				twitterlib.list('powergameonline/power-game-online-players',
 //					{ filter: '-R OR -via', since: cards.playersTweetId }, cards.filterPlayerTweets);

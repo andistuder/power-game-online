@@ -38,5 +38,5 @@ end
 
 get '/player-tweets' do
   content_type :json
-  STORE.get_tweet_data(5, (params[:since] || 0).to_i).to_json
+  STORE.get_tweet_data(15, (params[:since] || 0).to_i).to_json
 end
