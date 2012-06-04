@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'haml'
+
 require File.join(File.dirname(__FILE__), 'tweet_store')
 
 configure do
@@ -31,11 +32,11 @@ get '/how-to-play' do
 end
 
 get '/croupier-tweet' do
-  STORE.get_croupier_tweet.jasonize
-  #TODO make this a bit smarter
+  content_type :json
+  STORE.get_croupier_tweet.to_json
 end
 
 get '/player-tweets' do
-  #@tweets = []
+  content_type :json
   STORE.get_tweet_data(5, (params[:since] || 0).to_i).to_json
 end

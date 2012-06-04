@@ -38,7 +38,8 @@ class TweetStore
   end
 
   def get_croupier_tweet
-    Tweet.new(JSON.parse(@db.get('croupier')))
+    JSON.parse(@db.get('croupier'))
+    #Tweet.new(JSON.parse(@db.get('croupier')))
   end
 
   def get_tweet_data(limit=15, since=0)

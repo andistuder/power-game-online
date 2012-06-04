@@ -157,12 +157,13 @@ function renderPlayerTweet($column, tweet){
 					} else {
 			
 				// FOR TESTING USE THIS - var tweet = $.parseJSON(croupier_test);
-                        var tweet = [$.parseJSON(r_tweet.responseText)];
-						var	mostRecent = $.trim(tweet[0].text);
+                        var tweet = $.parseJSON(r_tweet.responseText);
+
+						var	mostRecent = $.trim(tweet.text);
 						//set croupier tweet id to most recent
-						cards.croupierTweetId = tweet[0].id;
+						cards.croupierTweetId = tweet.id;
 						
-						renderCroupierTweet(tweet[0]);	//render the tweet into the page
+						renderCroupierTweet(tweet);	//render the tweet into the page
 					
 						//Define searches
 						//console.log(mostRecent, cards.new_words_search);
@@ -306,6 +307,7 @@ function renderPlayerTweet($column, tweet){
 			for(i=0;i<results.length;i++){
 
                 var result = $.parseJSON(results[i]);
+//                console.log(result)
 
 				if(searchTweet(result.text, "#"+words[0])){
 					renderPlayerTweet($pCol1, result);
