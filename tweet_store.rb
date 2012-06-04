@@ -15,7 +15,9 @@ class TweetStore
     else
       @db = Redis.new
     end
-    @trim_count = 0
+    @power_trim_count = 0
+    @public_trim_count = 0
+    @players = ["andistuder", "another"]
   end
 
   def tweets(limit=15, since=0)
@@ -25,11 +27,20 @@ class TweetStore
   end
 
   def push(data)
-    @db.lpush(REDIS_KEY, data.to_json)
-    @trim_count += 1
-    if @trim_count > TRIM_THRESHOLD
-      @db.ltrim(REDIS_KEY, 0, NUM_TWEETS)
-      @trim_count = 20
+    if @players.include?(data["username"])
+      @db.lpush(REDIS_KEY, data.to_json)
+      @power_trim_count += 1
+      if @power_trim_count > TRIM_THRESHOLD
+        @db.ltrim(REDIS_KEY, 0, NUM_TWEETS)
+        @power_trim_count = 20
+      end
+    else
+      @db.lpush("public", data.to_json)
+      @public_trim_count += 1
+      if @pulic_trim_count > TRIM_THRESHOLD
+        @db.ltrim(REDIS_KEY, 0, NUM_TWEETS)
+        @public_trim_count = 20
+      end
     end
     if data["username"] == "PGOtest"
       @db.set('croupier', data.to_json)
@@ -39,15 +50,12 @@ class TweetStore
 
   def get_croupier_tweet
     JSON.parse(@db.get('croupier'))
-    #Tweet.new(JSON.parse(@db.get('croupier')))
   end
 
-  def get_tweet_data(limit=15, since=0)
-    #"hello"
-    #@db.lrange(REDIS_KEY, 0, limit - 1)
-    @db.lrange(REDIS_KEY, 0, limit - 1).reject {|t|
-      #puts JSON.parse(t)
-      JSON.parse(t)["received_at"] <= since}
+  def get_tweet_data(key="power", limit=15, since=0)
+    @db.lrange(key, 0, limit - 1).reject {|t|
+      JSON.parse(t)["received_at"] <= since
+    }
   end
 
 end

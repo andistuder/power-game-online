@@ -2,12 +2,14 @@ require 'tweetstream'
 require File.join(File.dirname(__FILE__), 'tweet_store')
 
 load File.join(File.dirname(__FILE__), 'twitter_authentication.rb')
-puts "Andi0"
+
 @tweet_store = TweetStore.new
-puts "Andi"
-TweetStream::Client.new.track('power') do |status|
-  #TweetStream::Client.new.filter({:track => 'power', :follow => 'PGOtest'}) do |status|
-  puts "Andi2"
+query_params = {}
+query_params.merge!(:track => 'powergameonline')
+query_params.merge!(:follow => 'PGOtest')
+puts query_params
+#TweetStream::Client.new.track('powergameonline') do |status|
+TweetStream::Client.new.filter(query_params ) do |status|
   @tweet_store.push(
     'id' => status[:id],
     'text' => status.text,

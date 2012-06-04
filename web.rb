@@ -8,9 +8,7 @@ configure do
 end
 
 get '/' do
-  #@croupier_tweet = STORE.get_croupier_tweet
   haml :index
-
 end
 
 get '/power' do
@@ -38,5 +36,10 @@ end
 
 get '/player-tweets' do
   content_type :json
-  STORE.get_tweet_data(15, (params[:since] || 0).to_i).to_json
+  STORE.get_tweet_data('power', 15, (params[:since] || 0).to_i).to_json
+end
+
+get '/public-tweets' do
+  content_type :json
+  STORE.get_tweet_data('public', 25, (params[:since] || 0).to_i).to_json
 end

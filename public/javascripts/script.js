@@ -79,7 +79,7 @@ function renderPlayerTweet($column, tweet){
 	//update tweet id to last tweet id rendered to ensure we look for "new" tweets
 	//console.log(cards.playersTweetId, "before");
 
-	cards.playersTweetId = tweet.received_at;
+//	cards.playersTweetId = tweet.received_at;
 	
 	//console.log(cards.playersTweetId, "after");
 
@@ -94,8 +94,7 @@ function renderPlayerTweet($column, tweet){
 	
 	var cards = {};
 	cards = {
-		words : ['war', 'love', 'live'],
-//		words : null, TODO change back
+		words : null,
 		placeholder : $('#populate'),
 		$cardword : $('.card-word'),
 		croupierTweetId : null,
@@ -186,8 +185,10 @@ function renderPlayerTweet($column, tweet){
 							cards.startPublicSearch(cards.words);
 						} else if (_got_end_round){
 							//end the round...
+//                            console.log("got the end");
 							cards.endRound();
 						} else if (_got_game_over){
+//                            console.log("game over");
 							return cards.gameOver();
 						} else{ 
 							//if we don't find new words log this
@@ -268,8 +269,9 @@ function renderPlayerTweet($column, tweet){
 			$('.waiting').remove();
 
 			
-			log("starting players");
-			
+			console.log("starting players");
+			console.log(cards.playersTweetId);
+
 			setTimeout(function(){
                     $.ajax({
        			 	url: 'http://localhost:9393/player-tweets?since=' + cards.playersTweetId,
@@ -280,14 +282,11 @@ function renderPlayerTweet($column, tweet){
        					}
        				},
        				complete : function(player_tweets){
-//                           console.log("Andi");
-//                           console.log(player_tweets.responseText);
-//                           console.log($.parseJSON(player_tweets.responseText));
-                           var tweet_array = $.parseJSON(player_tweets.responseText)
+                           var tweet_array = $.parseJSON(player_tweets.responseText);
                            cards.filterPlayerTweets(tweet_array);
                        }
                     });
-                console.log(cards.playersTweetId);
+//                console.log(cards.playersTweetId);
 			//get players timeline
 //				twitterlib.list('powergameonline/power-game-online-players',
 //					{ filter: '-R OR -via', since: cards.playersTweetId }, cards.filterPlayerTweets);
@@ -319,10 +318,10 @@ function renderPlayerTweet($column, tweet){
 				if(searchTweet(result.text, "#"+words[2])){
 					renderPlayerTweet($pCol3, result);
 				}
+
+                cards.playersTweetId = result.received_at;
 			}
-			
-			//TODO - set cards.playersTweetId so we don't permaloop
-			
+
 		},
 		startPublicSearch : function(words,stop)
 		{
@@ -330,9 +329,25 @@ function renderPlayerTweet($column, tweet){
 			if(stop === true) return;
 			
 			setTimeout(function(){
+                $.ajax({
+   			 	url: 'http://localhost:9393/public-tweets?since=' + cards.searchTweetId,
+   			 	dataType : "json",
+   				statusCode : {
+   					400 : function(){
+   						showInfo("rate limit hit");
+   					}
+   				},
+   				complete : function(public_tweets){
+//                           console.log("Andi");
+//                           console.log(player_tweets.responseText);
+//                           console.log($.parseJSON(player_tweets.responseText));
+                       var public_tweet_array = $.parseJSON(public_tweets.responseText);
+                       cards.checkVotes(public_tweet_array);
+                   }
+                });
 			//get public search
-				twitterlib.search(words[0] + ' OR ' + words[1] + ' OR ' + words[2] + ' OR #powergameonline', 
-				{ since: cards.searchTweetId }, cards.checkVotes);
+//				twitterlib.search(words[0] + ' OR ' + words[1] + ' OR ' + words[2] + ' OR #powergameonline',
+//				{ since: cards.searchTweetId }, cards.checkVotes);
 			},30e3); // 30 second timeout
 			
 			return setTimeout(function(){cards.startPublicSearch(words,stop);},30e3); //30 second timeout
@@ -350,21 +365,26 @@ function renderPlayerTweet($column, tweet){
 			//Loop through results and assign votes to each word
 				//TODO make less stupid
 			for(i=0;i<results.length;i++){
-				if(searchTweet(results[i].text, words[0])){
+                var result = $.parseJSON(results[i]);
+
+				if(searchTweet(result.text, "#"+words[0])){
 					cards.voteCount.word1++;
 				}
-				if(searchTweet(results[i].text, words[1])){
+				if(searchTweet(result.text, "#"+words[1])){
 					cards.voteCount.word2++;
 				}
-				if(searchTweet(results[i].text, words[2])){
+				if(searchTweet(result.text, "#"+words[2])){
 					cards.voteCount.word3++;
 				}
+
+                cards.searchTweetId = result.received_at;
+
 			}
 			//console.log(cards.voteCount,'votes obj after');
 			
 			cards.setVotes();
 			
-			cards.searchTweetId = results[results.length-1].id; //Set cards.searchTweetId to last ID we don't infinitely loop
+//			cards.searchTweetId = results[results.length-1].id; //Set cards.searchTweetId to last ID we don't infinitely loop
 			
 		},
 		setVotes : function()
@@ -387,7 +407,7 @@ function renderPlayerTweet($column, tweet){
 		},
 		stopPublicSearch : function()
 		{
-			return cards.startPublicSearch(false,true);
+			return cards.startPublicSearch(false, true);
 		},
 		stopCroupier : function()
 		{
