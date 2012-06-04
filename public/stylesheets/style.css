@@ -1,111 +1,229 @@
-body {
-  /*background-color: #505;*/
+/*  HTML5 ✰ Boilerplate Defaults / Resets  */
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline;}
+
+article, aside, details, figcaption, figure,footer, header, hgroup, menu, nav, section { display: block;}
+
+blockquote, q { quotes: none; }
+blockquote:before, blockquote:after,
+q:before, q:after { content: ''; content: none; }
+ins { background-color: #ff9; color: #000; text-decoration: none; }
+mark { background-color: #ff9; color: #000; font-style: italic; font-weight: bold; }
+del { text-decoration: line-through; }
+abbr[title], dfn[title] { border-bottom: 1px dotted; cursor: help; }
+table { border-collapse: collapse; border-spacing: 0; }
+hr { display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0; }
+input, select { vertical-align: middle; }
+
+body { font:13px/1.231 sans-serif; *font-size:small; } 
+select, input, textarea, button { font:99% sans-serif; }
+pre, code, kbd, samp { font-family: monospace, sans-serif; }
+
+html { overflow-y: scroll; }
+a:hover, a:active { outline: none; }
+ul, ol { margin-left: 2em; }
+ol { list-style-type: decimal; }
+nav ul, nav li { margin: 0; list-style:none; list-style-image: none; }
+small { font-size: 85%; }
+strong, th { font-weight: bold; }
+td { vertical-align: top; }
+
+sub, sup { font-size: 75%; line-height: 0; position: relative; }
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+
+pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; padding: 15px; }
+textarea { overflow: auto; }
+.ie6 legend, .ie7 legend { margin-left: -7px; } 
+input[type="radio"] { vertical-align: text-bottom; }
+input[type="checkbox"] { vertical-align: bottom; }
+.ie7 input[type="checkbox"] { vertical-align: baseline; }
+.ie6 input { vertical-align: text-bottom; }
+label, input[type="button"], input[type="submit"], input[type="image"], button { cursor: pointer; }
+button, input, select, textarea { margin: 0; }
+input:valid, textarea:valid   {  }
+input:invalid, textarea:invalid { border-radius: 1px; -moz-box-shadow: 0px 0px 5px red; -webkit-box-shadow: 0px 0px 5px red; box-shadow: 0px 0px 5px red; }
+.no-boxshadow input:invalid, .no-boxshadow textarea:invalid { background-color: #f0dddd; }
+
+::-moz-selection{ background: #FF5E99; color:#fff; text-shadow: none; }
+::selection { background:#FF5E99; color:#fff; text-shadow: none; }
+a:link { -webkit-tap-highlight-color: #FF5E99; }
+
+button {  width: auto; overflow: visible; }
+.ie7 img { -ms-interpolation-mode: bicubic; }
+
+body, select, input, textarea {  color: #444; }
+h1, h2, h3, h4, h5, h6 { font-weight: bold; }
+a, a:active, a:visited { color: #607890; }
+a:hover { color: #036; }
+
+/* ---------------
+
+Power Game Styles 
+
+--------------- */
+
+
+/** Font Refernces **/
+
+@font-face {
+    font-family: 'BebasNeueRegular';
+    src: url('../fonts/BebasNeue-webfont.eot');
+    src: url('../fonts/BebasNeue-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/BebasNeue-webfont.woff') format('woff'),
+         url('../fonts/BebasNeue-webfont.ttf') format('truetype'),
+         url('../fonts/BebasNeue-webfont.svg#BebasNeueRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
 }
 
-h1 {
-  text-align: center;
-  color: red;
-  font-size: 300%;
-  /*font-family: "Chalkboard", "Comic Sans MS", sans-serif;*/
+/* General and main Structure */
+
+html,body{background: #070231;text-align: center}
+
+a{-webkit-transition:color 0.2s ease-in;-moz-transition:color 0.2s ease-in;}
+ul{font-size:1.1em;line-height: 1.8em;color: #eee}
+em{font-style: italic;color:white}
+
+#centralContainer{width: 941px;padding: 0;margin: 20px auto;border:none; /*overflow: auto */}
+
+.sectionTitle {font: 24px/10px 'BebasNeueRegular', sans-serif, sans-serif;letter-spacing: 1px;color:#bbb;}
+.username, .username:visited {color: #25e1fd;text-decoration: none;}
+.username:hover {color:white}
+
+#cards, #players{float:left;margin:20px 0;width:100%;padding:0px;}
+
+
+hr{border-width: 1px}
+
+/* Info and waiting screens */
+
+#info{background: none repeat scroll 0 0 black;border-bottom: 2px solid white;color: white;display: block;font: bold 44px/28px 'BebasNeueRegular', sans-serif;padding: 20px 0;text-transform: uppercase;width: 100%;}
+
+.waiting{font:30px/1.6em "helvetica neue", sans-serif;color:white;text-align: center}
+
+
+/* Header and Titles */
+
+header{float: left;}
+
+
+h1#pg-title{font: 56px/68px 'BebasNeueRegular', sans-serif;letter-spacing: 1px;color:#cd010b;float:left}
+h1#pg-title a{color:#cd010b;text-decoration: none}
+h1#pg-title a:hover{color:white;}
+h2#lili{font: 30px/46px 'BebasNeueRegular', sans-serif;letter-spacing: 1px;color:#cd010b;float:left;margin-left: 20px}
+
+
+/* Nav */
+nav {float: right;letter-spacing: 1px}
+nav a, nav a:visited {font: 24px/36px 'BebasNeueRegular', sans-serif, sans-serif;text-decoration:none;color:#cd010b;float:left;margin-left: 12px; color:#bbb}
+nav a:hover, nav a.active-heading{color:white}
+
+/* Articles */
+
+article{border-top:1px solid white; border-bottom: 1px solid white; margin-top: 1px solid white; clear: both;float: left;padding: 0 20px 10px 0;text-align: left;width: 920px; overflow: auto;margin-bottom: 20px}
+
+.credit,.guide{margin:10px 20px;border-bottom: 1px solid white;padding-bottom: 10px;width: 555px;color: white;line-height: 1.5em}
+a.link,a.link:visited{color:lightBlue;font-size: 16px;}
+a.link:hover,a.link:visited:hover{color: white}
+
+
+article h1{margin-top:10px;font: 38px/1.1em 'BebasNeueRegular', sans-serif;letter-spacing: 1px;color:white;}
+article h2{font: 24px/1.8em 'BebasNeueRegular', sans-serif;letter-spacing: 1px;color:#efefef;}
+article h3{font: 18px/1.8em sans-serif;color:#eee;}
+
+/* Croupier */
+
+#croupier{float: left;width: 620px; margin: 20px 0;text-align: left}
+#croupier img{float: left;margin-right: 20px;width:60px;height:60px;}
+#croupier-tweet{float:left;font: 15px/24px sans-serif;color: #c8c0b5;width: 538px;margin-top: -6px}
+
+
+/* Columns */
+
+.column{float:left;width:300px;margin-right:20px;position: relative}
+.column.last {margin-right: 0px}
+
+
+/*** Cards ***/
+
+
+.card {width:300px;height:190px;background: white;display: table-cell;vertical-align: middle;position: relative;
+-moz-border-radius: 10px;-webkit-border-radius: 10px;border-radius: 10px;
+overflow: hidden;} /* overflow hidden is probably better than overflow visible/auto in the worst cast scenario of a word being too long*/
+.card-word {font:bold 58px/68px sans-serif; padding:10px 0;text-transform: uppercase;display:block;text-align: center;letter-spacing: 0}
+.vote-count{bottom: 15px;color: #0A0533;font-size: 18px;left: 0;position: absolute;text-transform: uppercase;width: 300px;}
+
+/* Card Colour Defaults */
+
+#card1{background: #05c8af;color: #c5100e}
+#card2{background: orange;color: #024e9c}
+#card3{background: fuchsia;color: lime}
+
+/* Players */
+
+#players{text-align: left}
+.player{float:left;margin-bottom:20px;width: 100%}
+.player-tweet{color:#c8c0b5;font: 15px/20px sans-serif}
+.avatar{float: left;margin-right: 10px}
+
+/* Copyright */
+.copyright{padding:15px;color:#eee}
+
+/* Hidden for extra DOM wretchedness */
+
+#populate{}
+
+
+
+
+/* --------------------------
+
+ return to html5boiler style 
+
+-------------------------- */
+
+.ir { display: block; text-indent: -999em; overflow: hidden; background-repeat: no-repeat; text-align: left; direction: ltr; }
+.hidden { display: none; visibility: hidden; }
+.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
+.invisible { visibility: hidden; }
+.clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; overflow: hidden; }
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; }
+
+
+@media all and (orientation:portrait) {}
+
+@media all and (orientation:landscape) {}
+
+@media screen and (max-device-width: 480px) {
+
+  /* html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; } */
 }
 
-#container {
-  margin: 1em auto;
-  position: relative;
-  width: 540px;
-  text-align: left;
-}
 
-#content {
-  width: 100%;
-  margin: 0px;
-  padding: 0px;
-}
-
-ul.tweets {
-  margin: 50px 0 0 0;
-  list-style: none;
-  padding: 0px 10px;
-}
-
-li:first-child.tweet {
-  border-top: none;
-}
-
-li.tweet {
-  position: relative;
-  border-top: 1px dashed #aaa;
-  padding: 0.7em 0px 0.6em 0px;
-  margin: 0px 0px;
-}
-
-li.latest {
-  display: none;
-}
-
-.avatar {
-  display: block;
-  height: 50px;
-  width: 50px;
-  position: absolute;
-  left: 0px;
-  margin: 0px 10px 0px 0px;
-  overflow: hidden;
-}
-
-.avatar a {
-  text-decoration: none;
-}
-
-.avatar img {
-  height: 48px;
-  width: 48px;
-  border-color: transparent;
-  border-width: 0px;
-}
-
-.main {
-  display: block;
-  margin-left: 60px;
-  min-height: 50px;
-  width: 455px;
-  overflow: hidden;
-}
-
-.text {
-  margin-top: 0;
-  padding-top: 0;
-}
-
-.text a {
-  text-decoration: none;
-  color: #000;
-}
-
-.text a:hover {
-  text-decoration: underline;
-  color: #00f;
-}
-
-.meta {
-  display: block;
-  margin: 3px 0px 0px 20px;
-  color: #444;
-  font-size: 0.764em;
-}
-
-.meta a {
-  text-decoration: none;
-  color: #444;
-}
-
-.meta a:hover {
-  text-decoration: underline;
-  color: #00f;
-}
-
-.lol {
-  font-size: 130%;
-  font-weight: bold;
-  color: #f00;
+@media print {
+  * { background: transparent !important; color: black !important; text-shadow: none !important; filter:none !important;
+  -ms-filter: none !important; } 
+  a, a:visited { color: #444 !important; text-decoration: underline; }
+  a[href]:after { content: " (" attr(href) ")"; }
+  abbr[title]:after { content: " (" attr(title) ")"; }
+  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }  
+  pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+  thead { display: table-header-group; }
+  tr, img { page-break-inside: avoid; }
+  @page { margin: 0.5cm; }
+  p, h2, h3 { orphans: 3; widows: 3; }
+  h2, h3{ page-break-after: avoid; }
 }

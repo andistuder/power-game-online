@@ -1,17 +1,44 @@
-:javascript
-  function refreshTweets() {
-    $.get('/latest', {since: window.latestTweet}, function(data) {
-      $('.tweets').prepend(data);
-      $('.latest').slideDown('slow');
-      $('.tweets li:gt(50)').remove();
+#info Round has Finished
+#centralContainer
+  %header
+    %h1#pg-title
+      %a{:href => "/"} POWER GAME
+    %h2#lili Liliane Lijn
+  %nav
+    %a{:href => "/how-to-play"} How to Play
+    %a{:href => "/credits"} CREDITS
+    -#%a{:href => "http://www.netaudiolondon.org"} netaudio 2011
+  %section#croupier
+    %h3.sectionTitle MC
+    %hr/
+    / <img src="/images/croupier-placeholder_60x60.jpg" alt="Croupier" />
+    %img{:alt => "Croupier", :src => "http://a1.twimg.com/profile_images/1337559762/171781_10150095819137337_554062336_6612750_4908752_o_reasonably_small.jpg"}/
+    %p#croupier-tweet
+      %a.username{:href => "#"} powergameonline
+      waiting for tweets...
+  %section#cards
+    .column
+      #card1.card
+        %p.waiting Waiting for new words...
+    .column
+      #card2.card
+        %p.waiting Waiting for new words...
+    .column.last
+      #card3.card
+        %p.waiting Waiting for new words...
+  %section#players
+    %h3.sectionTitle Players
+    %hr/
+    #players1.column
+      %p.waiting Waiting for nominations...
+    #players2.column
+      %p.waiting Waiting for nominations...
+    #players3.column.last
+      %p.waiting Waiting for nominations...
+#populate.hidden
+-#%script{:src => "/javascripts/test.js"}
+-#%script{:src => "/javascripts/script.js"}
+/[if lt IE 7 ]
+  <script src="js/libs/dd_belatedpng.js"></script>
+  <script> DD_belatedPNG.fix('img, .png_bg');</script>
 
-      setTimeout(refreshTweets, 1000);
-    });
-  }
-  $(function() {
-    setTimeout(refreshTweets, 1000);
-  });
-  
-%h1 Recent POWER Tweets
-%ul.tweets
-  = haml :tweets, :layout => false

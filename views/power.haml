@@ -1,0 +1,21 @@
+#container.power
+  #content
+    %h1 Recent POWER Tweets
+    %ul.tweets
+      = haml :tweets, :layout => false
+    #footer.meta
+      %a{:href => "https://github.com/digitalhobbit/twatcher-lite/"}
+        = "Architecture and UI built upon designs by of digitalhobbit"
+:javascript
+  function refreshTweets() {
+    $.get('/latest', {since: window.latestTweet}, function(data) {
+      $('.tweets').prepend(data);
+      $('.latest').slideDown('slow');
+      $('.tweets li:gt(50)').remove();
+
+      setTimeout(refreshTweets, 2000);
+    });
+  }
+  $(function() {
+    setTimeout(refreshTweets, 2000);
+  });
