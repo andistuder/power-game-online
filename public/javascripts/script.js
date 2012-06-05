@@ -14,6 +14,7 @@ $(function(){
 
 /** Setup some selectors **/
 
+var site_url = window.location.href;
 var $croupier_tweet = $('#croupier-tweet'), $info = $('#info'),
 $card1 = $('#card1'),
 $card2 = $('#card2'),
@@ -54,7 +55,7 @@ function searchTweet(string, check){
 	if(isMatched != null){
 		return true;
 	} else return false;
-};
+}
 
 function renderCroupierTweet(tweet){
 		//console.log(tweet);
@@ -63,7 +64,7 @@ function renderCroupierTweet(tweet){
   		html += tweet.text;
   		html += '</p>';
   		return $croupier_tweet.html(html);
-};
+}
 
 function renderPlayerTweet($column, tweet){
 //    console.log(tweet)
@@ -86,7 +87,7 @@ function renderPlayerTweet($column, tweet){
 	$('.waiting').remove(); //just in case
 	
 	return $column.prepend(html);
-};
+}
 	
 	/** Cards and card functions,
 		The scope has gone all to pieces here!
@@ -123,7 +124,7 @@ function renderPlayerTweet($column, tweet){
 //			if(cards.croupierTweetId != null){
 //				url += '&since_id='+cards.croupierTweetId;
 //			}
-            var url = 'http://localhost:9393/croupier-tweet'
+            var url = site_url+'croupier-tweet'
 			
 			/** test rate limiting - seems to fail if requested from jquery :'( **/
 			/*
@@ -274,7 +275,7 @@ function renderPlayerTweet($column, tweet){
 
 			setTimeout(function(){
                     $.ajax({
-       			 	url: 'http://localhost:9393/player-tweets?since=' + cards.playersTweetId,
+       			 	url: site_url + 'player-tweets?since=' + cards.playersTweetId,
        			 	dataType : "json",
        				statusCode : {
        					400 : function(){
@@ -330,7 +331,7 @@ function renderPlayerTweet($column, tweet){
 			
 			setTimeout(function(){
                 $.ajax({
-   			 	url: 'http://localhost:9393/public-tweets?since=' + cards.searchTweetId,
+   			 	url: site_url + 'public-tweets?since=' + cards.searchTweetId,
    			 	dataType : "json",
    				statusCode : {
    					400 : function(){
