@@ -4,10 +4,10 @@ require File.join(File.dirname(__FILE__), 'tweet_store')
 load File.join(File.dirname(__FILE__), 'twitter_authentication.rb')
 
 @tweet_store = TweetStore.new
-#query_params = {}
-#query_params.merge!(:track => %w(powergameonline power))
-#query_params.merge!(:follow => %w(PGOtest))
-#puts query_params
+query_params = {}
+query_params.merge!(:track => "powergameonline,power")
+query_params.merge!(:follow => "599169181")
+puts query_params
 
 @client = TweetStream::Client.new
 
@@ -33,7 +33,7 @@ end
 
 @client.on_delete do |status_id, user_id|
   msg = {:msg => "TweetStream: delete #{status_id} of user #{user_id}", :timestamp => Time.new}
-  #Tweet.delete(status_id)
+  #TODO Tweet.delete(status_id)
   @tweet_store.write_errors(msg)
 
 end
@@ -43,7 +43,7 @@ end
 
 end
 
-@client.track('power', 'powergameonline') do |status|
+@client.filter(query_params) do |status|
   @tweet_store.push(
     'id' => status[:id],
     'text' => status.text,

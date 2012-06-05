@@ -4,9 +4,8 @@ require File.join(File.dirname(__FILE__), 'tweet')
 
 class TweetStore
 
-  REDIS_KEY = 'power'
-  NUM_TWEETS = 20
-  TRIM_THRESHOLD = 100
+  NUM_TWEETS = 40
+  TRIM_THRESHOLD = 200
 
   def initialize
     if ENV["REDISTOGO_URL"]
@@ -21,25 +20,25 @@ class TweetStore
   end
 
   def tweets(limit=15, since=0)
-    @db.lrange(REDIS_KEY, 0, limit - 1).collect {|t|
+    @db.lrange('public', 0, limit - 1).collect {|t|
       Tweet.new(JSON.parse(t))
     }.reject {|t| t.received_at <= since}
   end
 
   def push(data)
     if @players.include?(data["username"])
-      @db.lpush(REDIS_KEY, data.to_json)
+      @db.lpush('power', data.to_json)
       @power_trim_count += 1
       if @power_trim_count > TRIM_THRESHOLD
-        @db.ltrim(REDIS_KEY, 0, NUM_TWEETS)
-        @power_trim_count = 20
+        @db.ltrim('power', 0, NUM_TWEETS)
+        @power_trim_count = NUM_TWEETS
       end
     else
-      @db.lpush("public", data.to_json)
+      @db.lpush('public', data.to_json)
       @public_trim_count += 1
-      if @pulic_trim_count > TRIM_THRESHOLD
-        @db.ltrim(REDIS_KEY, 0, NUM_TWEETS)
-        @public_trim_count = 20
+      if @public_trim_count > TRIM_THRESHOLD
+        @db.ltrim('public', 0, NUM_TWEETS)
+        @public_trim_count = NUM_TWEETS
       end
     end
     if data["username"] == "PGOtest"

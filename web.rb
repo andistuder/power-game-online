@@ -26,6 +26,7 @@ end
 get '/credits' do
   haml :credits
 end
+
 get '/how-to-play' do
   haml :how_to_play
 end
