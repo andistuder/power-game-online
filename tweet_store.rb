@@ -56,6 +56,27 @@ class TweetStore
     @db.lrange(key, 0, limit - 1).reject {|t|
       JSON.parse(t)["received_at"] <= since
     }
+    #TODO maybe write to parse proper?
+  end
+
+  def write_errors(message)
+    @db.lpush("error", message.to_json)
+  end
+
+  def get_errors
+    no_of_errors = @db.llen('error')
+    @db.lrange('error', 0, no_of_errors - 1).collect{|e|
+    JSON.parse(e)}
+    #TODO join with above?
+  end
+  def delete_errors
+    no_of_errors = @db.llen('error')
+    @errors = []
+    @db.llen('error').times do
+      @errors << JSON.parse(@db.lpop('error'))
+    end
+    @errors
+    #TODO join with above?
   end
 
 end
