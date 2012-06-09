@@ -1,2 +1,2 @@
-web: bundle exec ruby web.rb -p $PORT
+web: bundle exec rackup config.ru -p $PORT
 worker: bundle exec ruby twitter_filter.rb
