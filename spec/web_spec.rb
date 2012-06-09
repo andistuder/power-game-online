@@ -19,7 +19,7 @@ describe "web" do
 
   describe "GET /latest" do
     it "should call the tweets and resolve" do
-      STORE.should_receive(:tweets).with(5, 0).and_return([])
+      STORE.should_receive(:tweets).with('public', 5, 0).and_return([])
       get '/latest'
       last_response.should be_ok
     end

@@ -5,6 +5,10 @@ require 'eventmachine'
 require File.join(File.dirname(__FILE__), 'tweet_store')
 require File.join(File.dirname(__FILE__), 'twitter_restful')
 
+configure :production do
+  require 'newrelic_rpm'
+end
+
 configure do
   STORE = TweetStore.new
 end
@@ -19,7 +23,7 @@ get '/power' do
 end
 
 get '/latest' do
-  @power_tweets = STORE.tweets(5, (params[:since] || 0).to_i)
+  @power_tweets = STORE.tweets('public', 5, (params[:since] || 0).to_i)
   @tweet_class = 'latest'
   haml :tweets, :layout => false
 end

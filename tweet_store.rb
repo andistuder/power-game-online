@@ -16,19 +16,26 @@ class TweetStore
     end
     @power_trim_count = 0
     @public_trim_count = 0
+    @function_trim_count = 0
     @players = [53945780, 15363578, 15363578] #lilianelijn, andistuder, richardwilding
     @croupiers = [599169181, 292503547]  # @pgotest and @powergameonline
   end
 
-  def tweets(limit=15, since=0)
-    @db.lrange('public', 0, limit - 1).collect {|t|
+  def tweets(key='public', limit=15, since=0)
+    @db.lrange(key, 0, limit - 1).collect {|t|
       Tweet.new(JSON.parse(t))
     }.reject {|t| t.received_at <= since}
   end
 
   def push(data)
     if @croupiers.include?(data["userid"])
-      @db.set('croupier', data.to_json)
+      @db.lpush('function', data.to_json)
+      @function_trim_count += 1
+      if @function_trim_count > TRIM_THRESHOLD
+        @db.ltrim('function', 0, NUM_TWEETS)
+        @function_trim_count = NUM_TWEETS
+      end
+      #@db.set('croupier', data.to_json)
     elsif @players.include?(data["userid"])
       @db.lpush('power', data.to_json)
       @power_trim_count += 1
@@ -47,7 +54,7 @@ class TweetStore
   end
 
   def get_croupier_tweet
-    JSON.parse(@db.get('croupier'))
+    JSON.parse(@db.lrange('function',0,0)[0])
   end
 
   def get_tweet_data(key="power", limit=15, since=0)

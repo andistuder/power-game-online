@@ -11,6 +11,10 @@ gem "json", "~> 1.7.3"
 gem "haml", "~> 3.1.6"
 gem "httparty", "~> 0.8.3"
 
+group :production do
+  gem 'newrelic_rpm'
+end
+
 group :development do
   gem "heroku_plus"
   gem "shotgun", "~> 0.9"
