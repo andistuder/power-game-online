@@ -62,7 +62,7 @@ get '/set-players' do
     list = params[:list] || "power-game-online-players"
     owner = params[:owner] || "powergameonline"
 
-    response = TwitterRestful.new.get_list_members(list, owner)
+    response = TwitterRestful.get_list_members(list, owner)
     if response[:code] == 200 && response[:members].class == Array
       STORE.set_players(response[:members])
       "Set #{response[:members].length} players as per #{owner}/#{list}"

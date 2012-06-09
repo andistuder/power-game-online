@@ -1,5 +1,4 @@
-require File.dirname(__FILE__) + '/../web'
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'spec_helper'
 
 describe "web" do
 
@@ -99,7 +98,7 @@ describe "web" do
     context "with correct pass phrase" do
       it "should resolve even if Twitter can find the list" do
         response = {:code => 404}
-        TwitterRestful.any_instance.should_receive(:get_list_members).with("not-existing","lost").and_return(response)
+        TwitterRestful.should_receive(:get_list_members).with("not-existing","lost").and_return(response)
         get "/set-players?pass=power&list=not-existing&owner=lost"
         last_response.should be_ok
         last_response.body.should include("Set players failed. Error: 404")
@@ -108,7 +107,7 @@ describe "web" do
       it "should resolve even if no list or owner declared" do
         @members = [123, 456]
         response = {:code => 200, :members => @members}
-        TwitterRestful.any_instance.should_receive(:get_list_members).with("power-game-online-players", "powergameonline").and_return(response)
+        TwitterRestful.should_receive(:get_list_members).with("power-game-online-players", "powergameonline").and_return(response)
         STORE.should_receive(:set_players).with(@members)
         get "/set-players?pass=power"
         last_response.should be_ok

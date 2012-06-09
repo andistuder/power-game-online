@@ -1,7 +1,7 @@
 require 'tweetstream'
 require File.join(File.dirname(__FILE__), 'tweet_store')
 
-load File.join(File.dirname(__FILE__), 'twitter_authentication.rb')
+load File.join(File.dirname(__FILE__), 'config/twitter_authentication.rb')
 
 @tweet_store = TweetStore.new
 query_params = {}
