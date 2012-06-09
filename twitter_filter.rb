@@ -5,8 +5,8 @@ load File.join(File.dirname(__FILE__), 'twitter_authentication.rb')
 
 @tweet_store = TweetStore.new
 query_params = {}
-query_params.merge!(:track => "powergameonline,power")
-query_params.merge!(:follow => "599169181")
+query_params.merge!(:track => "powergameonline")
+query_params.merge!(:follow => "599169181,292503547") # @pgotest and @powergameonline
 puts query_params
 
 @client = TweetStream::Client.new
