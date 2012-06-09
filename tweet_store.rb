@@ -16,8 +16,8 @@ class TweetStore
     end
     @power_trim_count = 0
     @public_trim_count = 0
-    @players = %w(53945780 15363578 15363578) #lilianelijn, andistuder, richardwilding
-    @croupiers = %w(599169181 292503547)  # @pgotest and @powergameonline
+    @players = [53945780, 15363578, 15363578] #lilianelijn, andistuder, richardwilding
+    @croupiers = [599169181, 292503547]  # @pgotest and @powergameonline
   end
 
   def tweets(limit=15, since=0)
@@ -77,4 +77,7 @@ class TweetStore
     #TODO join with above?
   end
 
+  def set_players(new_players)
+    @players = new_players
+  end
 end

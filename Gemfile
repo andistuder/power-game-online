@@ -9,6 +9,7 @@ gem "tweetstream", "~> 2.0.0"
 gem "redis", "~> 3.0.1"
 gem "json", "~> 1.7.3"
 gem "haml", "~> 3.1.6"
+gem "httparty", "~> 0.8.3"
 
 group :development do
   gem "heroku_plus"
@@ -18,7 +19,8 @@ group :development do
   gem 'growl'
 end
 
-group :test, :development do
+group :test do
   gem "rspec", "~> 2.10.0"
   gem "rack-test", "~> 0.6.1"
+  gem "webmock", "~> 1.8.7"
 end
