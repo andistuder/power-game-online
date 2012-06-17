@@ -27,8 +27,7 @@ $pCol3 = $('#players3'); //yes it's dumb atm.
 	
 	
 //Info Panel
-function showInfo(message)
-{
+function showInfo(message) {
 	$info.html(message).fadeIn();
 }
 
@@ -36,16 +35,13 @@ function hideInfo(){
 	$info.html("").fadeOut();
 }
 
-function secondsToString(seconds)
-{
-	
+function secondsToString(seconds){
 	var numdays = Math.floor(seconds / 86400);
 	var numhours = Math.floor((seconds % 86400) / 3600);
 	var numminutes = Math.floor(((seconds % 86400) % 3600) / 60);
 	var numseconds = ((seconds % 86400) % 3600) % 60;
 	
 	return "Time to reset is " + numhours + " hours " + numminutes + " minutes " + numseconds + " seconds";
-
 }
 	
 function searchTweet(string, check){
@@ -67,20 +63,20 @@ function renderCroupierTweet(tweet){
 }
 
 function renderPlayerTweet($column, tweet){
-//    console.log(tweet)
+    //    console.log(tweet)
 	var html = '<div class="player">';
 	html += '<img class="avatar" alt="' + tweet.name + '" height="30" width="30" src="' + tweet.profile_image_url + '" width="48" />';
 	html += '<p class="player-tweet"><a href="http://twitter.com/' + tweet.username + '" ';
 	html += 'class="username" title="' + tweet.name + '">';
 	html += tweet.username + '</a> ';
 	html += tweet.text
-//	html += twitterlib.ify.clean(tweet.text); TODO maybe we need this?
+    //	html += twitterlib.ify.clean(tweet.text); TODO maybe we need this?
 	html += '</p>';
 
 	//update tweet id to last tweet id rendered to ensure we look for "new" tweets
 	//console.log(cards.playersTweetId, "before");
 
-//	cards.playersTweetId = tweet.received_at;
+    //	cards.playersTweetId = tweet.received_at;
 	
 	//console.log(cards.playersTweetId, "after");
 
@@ -88,8 +84,7 @@ function renderPlayerTweet($column, tweet){
 	
 	return $column.prepend(html);
 }
-	
-	/** Cards and card functions,
+    /** Cards and card functions,
 		The scope has gone all to pieces here!
 	**/
 	
@@ -113,32 +108,10 @@ function renderPlayerTweet($column, tweet){
 			return cardHtml;
 		},
 		voteCount : {word1:0,word2:0,word3:0},
-		getCroupierTweet : function(stop)
-		{
+		getCroupierTweet : function(stop){
 			if(stop == true){return false};
 			
-						
-//			var url = 'http://api.twitter.com/1/statuses/user_timeline.json?';
-//			url += 'screen_name=powergameonline&count=1&page=1&include_rts=false';
-//
-//			if(cards.croupierTweetId != null){
-//				url += '&since_id='+cards.croupierTweetId;
-//			}
             var url = site_url+'croupier-tweet'
-			
-			/** test rate limiting - seems to fail if requested from jquery :'( **/
-			/*
-			$.ajax({
-			 	url: "http://api.twitter.com/1/account/rate_limit_status.json?",
-				complete : function(data){
-					showInfo(secondsToString(date.reset_time_in_seconds));
-				}
-			});
-			
-			return false;
-			*/
-				
-			
 			
 			$.ajax({
 			 	url: url,
@@ -148,6 +121,10 @@ function renderPlayerTweet($column, tweet){
 						showInfo("rate limit hit");
 					}
 				},
+
+//                complete: function(r_tweet){
+//                    processTweet(r_tweet);
+
 				complete : function(r_tweet){
 					if(r_tweet.statusText == 'error'){
 						showInfo("rate limit has been hit... game should come back online in 15 minutes");
@@ -155,52 +132,13 @@ function renderPlayerTweet($column, tweet){
 						cards.stopPlayers();
 						return setTimeout(function(){cards.getCroupierTweet()},600e3);
 					} else {
-			
-				// FOR TESTING USE THIS - var tweet = $.parseJSON(croupier_test);
                         var tweet = $.parseJSON(r_tweet.responseText);
+			            cards.processTweet(tweet);
+					    setTimeout(function(){cards.getCroupierTweet()},5e3);
+                    }
+					
+			    }
 
-						var	mostRecent = $.trim(tweet.text);
-						//set croupier tweet id to most recent
-						cards.croupierTweetId = tweet.id;
-						
-						renderCroupierTweet(tweet);	//render the tweet into the page
-					
-						//Define searches
-						//console.log(mostRecent, cards.new_words_search);
-												
-						var	_got_new_words = searchTweet(mostRecent, cards.new_words_search),
-						_new_words_colon = searchTweet(mostRecent, cards.with_colon),
-						_got_players_choose_words = searchTweet(mostRecent, cards.players_choose_search),
-						_got_public_vote_now = searchTweet(mostRecent, cards.public_vote_search),
-						_got_end_round = searchTweet(mostRecent, cards.end_round_search),
-						_got_game_over = searchTweet(mostRecent, cards.game_over_search);
-						
-						if(_got_new_words || _new_words_colon){
-							//Set new words
-							cards.setNewWords(mostRecent);
-						} else if (_got_players_choose_words) {
-							// Start searching players list
-							cards.startPlayers();
-						} else if (_got_public_vote_now){
-							//Start searching public votes
-							cards.startPublicSearch(cards.words);
-						} else if (_got_end_round){
-							//end the round...
-//                            console.log("got the end");
-							cards.endRound();
-						} else if (_got_game_over){
-//                            console.log("game over");
-							return cards.gameOver();
-						} else{ 
-							//if we don't find new words log this
-							log('Searching for croupier key words, couldn\'nt find anything...');
-						}
-						//one minute search timeout
-						setTimeout(function(){cards.getCroupierTweet()},5e3);
-					
-					
-					}
-				}				
 			});
 						
 		},
@@ -270,8 +208,8 @@ function renderPlayerTweet($column, tweet){
 			$('.waiting').remove();
 
 			
-			console.log("starting players");
-			console.log(cards.playersTweetId);
+//			console.log("starting players");
+//			console.log(cards.playersTweetId);
 
 			setTimeout(function(){
                     $.ajax({
@@ -339,9 +277,6 @@ function renderPlayerTweet($column, tweet){
    					}
    				},
    				complete : function(public_tweets){
-//                           console.log("Andi");
-//                           console.log(player_tweets.responseText);
-//                           console.log($.parseJSON(player_tweets.responseText));
                        var public_tweet_array = $.parseJSON(public_tweets.responseText);
                        cards.checkVotes(public_tweet_array);
                    }
@@ -448,7 +383,48 @@ function renderPlayerTweet($column, tweet){
 			showInfo("Game Has Ended");
 			
 			return;
-		}
+		},
+        processTweet : function(tweet) {
+
+        //        console.log(tweet)
+                var mostRecent = $.trim(tweet.text);
+                //set croupier tweet id to most recent
+                cards.croupierTweetId = tweet.id;
+
+                renderCroupierTweet(tweet);	//render the tweet into the page
+
+                //Define searches
+                //console.log(mostRecent, cards.new_words_search);
+
+                var _got_new_words = searchTweet(mostRecent, cards.new_words_search),
+                    _new_words_colon = searchTweet(mostRecent, cards.with_colon),
+                    _got_players_choose_words = searchTweet(mostRecent, cards.players_choose_search),
+                    _got_public_vote_now = searchTweet(mostRecent, cards.public_vote_search),
+                    _got_end_round = searchTweet(mostRecent, cards.end_round_search),
+                    _got_game_over = searchTweet(mostRecent, cards.game_over_search);
+
+                if (_got_new_words || _new_words_colon) {
+                    //Set new words
+                    cards.setNewWords(mostRecent);
+                } else if (_got_players_choose_words) {
+                    // Start searching players list
+                    cards.startPlayers();
+                } else if (_got_public_vote_now) {
+                    //Start searching public votes
+                    cards.startPublicSearch(cards.words);
+                } else if (_got_end_round) {
+                    //end the round...
+//                                    console.log("got the end");
+                    cards.endRound();
+                } else if (_got_game_over) {
+//                                    console.log("game over");
+                    return cards.gameOver();
+                } else {
+                    //if we don't find new words log this
+                    log('Searching for croupier key words, couldn\'nt find anything...');
+                }
+
+            }
 
 	}
 	
@@ -459,12 +435,21 @@ function renderPlayerTweet($column, tweet){
 //Initialisation
 
 function init(){
-	showInfo("Ready to start...");
-	setTimeout(function(){cards.getCroupierTweet()},1e3);
+//    showInfo("Catching up...");
+    $.each(innit_tweets, function(index, value){
+        var tweet = $.parseJSON(value);
+        cards.processTweet(tweet);
+    });
+
+    showInfo("Catching up...");
+	setTimeout(function(){
+        hideInfo();
+        cards.getCroupierTweet();
+    },2e3);
 }
-
-init();
-
+$(document).ready(function(){
+    init();
+});
 /***
 Tests
 ***/
@@ -476,6 +461,8 @@ Tests
 //cards.gameOver();
 	
 });
+
+
 
 
 // log helper

@@ -14,6 +14,7 @@ configure do
 end
 
 get '/' do
+  @tweets = STORE.get_tweet_data('function', 4).reverse
   haml :index
 end
 
