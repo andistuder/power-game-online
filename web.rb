@@ -37,6 +37,10 @@ get '/how-to-play' do
   haml :how_to_play
 end
 
+get "/admin" do
+  haml :admin
+end
+
 get '/croupier-tweet' do
   content_type :json
   STORE.get_croupier_tweet.to_json
@@ -44,7 +48,7 @@ end
 
 get '/player-tweets' do
   content_type :json
-  STORE.get_tweet_data('power', 15, (params[:since] || 0).to_i).to_json
+  STORE.get_tweet_data('power', 10, (params[:since] || 0).to_i).to_json
 end
 
 get '/public-tweets' do
@@ -64,9 +68,16 @@ end
 
 get '/set-players' do
   if params[:pass] == "power"
-    list = params[:list] || "power-game-online-players"
-    owner = params[:owner] || "powergameonline"
-
+    if params[:list] == "" || params[:list] == nil
+      list = "power-game-online-players"
+    else
+      list = params[:list]
+    end
+    if params[:owner] == "" || params[:owner] == nil
+      owner = "powergameonline"
+    else
+      owner = params[:owner]
+    end
     response = TwitterRestful.get_list_members(list, owner)
     if response[:code] == 200 && response[:members].class == Array
       STORE.set_players(response[:members])

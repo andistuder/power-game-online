@@ -229,10 +229,10 @@ function renderPlayerTweet($column, tweet){
 			//get players timeline
 //				twitterlib.list('powergameonline/power-game-online-players',
 //					{ filter: '-R OR -via', since: cards.playersTweetId }, cards.filterPlayerTweets);
-			},20e3); // 60e3 wait a minute before checking for nominations
+			},200); // 60e3 wait a minute before checking for nominations
 			
-			// Add a loop in here.
-			return setTimeout(function(){cards.startPlayers()},100e3);
+			// Add a loop in here. AS:not sure why needed?
+//			return setTimeout(function(){cards.startPlayers()},100e3);
 
 		},
 		filterPlayerTweets : function(results)

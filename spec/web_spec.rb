@@ -39,6 +39,13 @@ describe "web" do
     end
   end
 
+  describe "GET /admin" do
+    it "should resolve" do
+      get '/admin'
+      last_response.should be_ok
+    end
+  end
+
   describe "GET /croupier-tweet" do
     it "should call the tweets and resolve" do
       STORE.should_receive(:get_croupier_tweet).and_return("")

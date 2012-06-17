@@ -1,0 +1,34 @@
+#centralContainer
+  %header
+    %h1#pg-title
+      %a{:href => "/"} Powergame Online
+    %h2#lili Liliane Lijn
+  %nav
+    %a.active-heading{:href => "/how-to-play"} How to Play
+    %a{:href => "/credits"} CREDITS
+  %article#admin
+    %h1 Admin area
+    %section.guide
+      %h2 Functional Tweets
+      %ol
+        %li new words: word1 word2 word3
+        %li [...] choose most powerful word [...]
+        %li [...] vote now [...]
+        %li End round x, the post powerful word is word2
+        %li (return to 1 or) Game Over
+    %section.guide
+      %h2 Set players
+      %form#set_players{:action => "/set-players", :method => "get"}
+        List name:
+        %input{:name => "list", :placeholder => "leave blank for default"}
+        %br
+        %br
+        List owner:
+        %input{:name => "owner", :placeholder => "leave blank for default"}
+        %br
+        %br
+        Password:
+        %input{:name => "pass", :type => "password"}
+        %br
+        %br
+        %input#submit_players.button{:type => "submit", :value => "Submit"}
