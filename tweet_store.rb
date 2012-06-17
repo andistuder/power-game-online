@@ -40,14 +40,13 @@ class TweetStore
         @function_trim_count = NUM_TWEETS
       end
       #@db.set('croupier', data.to_json)
-    elsif @players.include?(data["userid"])
+    else
       @db.lpush('power', data.to_json)
       @power_trim_count += 1
       if @power_trim_count > TRIM_THRESHOLD
         @db.ltrim('power', 0, NUM_TWEETS)
         @power_trim_count = NUM_TWEETS
       end
-    else
       @db.lpush('public', data.to_json)
       @public_trim_count += 1
       if @public_trim_count > TRIM_THRESHOLD
