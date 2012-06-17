@@ -30,6 +30,8 @@ class TweetStore
   end
 
   def push(data)
+    #puts "user ID #{data["userid"]}"
+    #puts "players ID #{@players}"
     if @croupiers.include?(data["userid"])
       @db.lpush('function', data.to_json)
       @function_trim_count += 1
@@ -96,5 +98,8 @@ class TweetStore
   end
   def get_players
     @players
+  end
+  def clear_all
+    @db.flushall
   end
 end

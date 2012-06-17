@@ -94,3 +94,7 @@ end
 get '/players' do
   "#{STORE.get_players}"
 end
+
+get "/flush" do
+  STORE.clear_all
+end
