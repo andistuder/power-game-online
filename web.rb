@@ -88,4 +88,9 @@ get '/set-players' do
   else
     'Set players failed (no password given). Please check the instructions on admin sheet.'
   end
+
+end
+
+get '/players' do
+  "#{STORE.get_players}"
 end

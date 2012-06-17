@@ -17,7 +17,9 @@ class TweetStore
     @power_trim_count = 0
     @public_trim_count = 0
     @function_trim_count = 0
-    @players = [53945780, 15363578, 15363578] #lilianelijn, andistuder, richardwilding
+    @players = []
+    @db.lrange('player', 0, 99).each{|id| @players << id.to_i}
+    #@players = [53945780, 14060355, 15363578] #lilianelijn, andistuder, richardwilding
     @croupiers = [599169181, 292503547]  # @pgotest and @powergameonline
   end
 
@@ -85,6 +87,14 @@ class TweetStore
   end
 
   def set_players(new_players)
-    @players = new_players
+    @db.del('player')
+    @players = []
+    new_players.each do |player|
+      @db.lpush('player', player)
+      @players << player
+    end
+  end
+  def get_players
+    @players
   end
 end
