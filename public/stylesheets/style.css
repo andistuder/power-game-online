@@ -91,7 +91,7 @@ Power Game Styles
 html,body{background: #070231;text-align: center}
 
 a{-webkit-transition:color 0.2s ease-in;-moz-transition:color 0.2s ease-in;}
-ul{font-size:1.1em;line-height: 1.8em;color: #eee}
+ul{line-height: 1.8em;color: #eee}
 em{font-style: italic;color:white}
 
 #centralContainer{width: 941px;padding: 0;margin: 20px auto;border:none; /*overflow: auto */}
@@ -109,7 +109,7 @@ hr{border-width: 1px}
 
 #info{background: none repeat scroll 0 0 black;border-bottom: 2px solid white;color: white;display: block;font: bold 44px/28px 'BebasNeueRegular', sans-serif;padding: 20px 0;text-transform: uppercase;width: 100%;}
 
-.waiting{font:30px/1.6em "helvetica neue", sans-serif;color:white;text-align: center}
+.waiting{font:20px/1.6em "helvetica neue", sans-serif;color:white;text-align: center}
 
 
 /* Header and Titles */
@@ -132,7 +132,7 @@ nav a:hover, nav a.active-heading{color:white}
 
 article{border-top:1px solid white; border-bottom: 1px solid white; margin-top: 1px solid white; clear: both;float: left;padding: 0 20px 10px 0;text-align: left;width: 920px; overflow: auto;margin-bottom: 20px}
 
-.credit,.guide{margin:10px 20px;border-bottom: 1px solid white;padding-bottom: 10px;width: 555px;color: white;line-height: 1.5em}
+.credit,.guide{margin:10px 0px;border-bottom: 1px solid white;padding-bottom: 10px;width: 555px;color: white;line-height: 1.5em}
 a.link,a.link:visited{color:lightBlue;font-size: 16px;}
 a.link:hover,a.link:visited:hover{color: white}
 
@@ -177,7 +177,7 @@ overflow: hidden;} /* overflow hidden is probably better than overflow visible/a
 .avatar{float: left;margin-right: 10px}
 
 /* Copyright */
-.copyright{padding:15px;color:#eee}
+.copyright{padding:15px 0w;color:#eee}
 
 /* Hidden for extra DOM wretchedness */
 
