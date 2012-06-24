@@ -67,7 +67,7 @@ get '/delete-errors' do
 end
 
 get '/set-players' do
-  if params[:pass] == "power"
+  if params[:pass] == ENV['APP_PASSWORD']
     if params[:list] == "" || params[:list] == nil
       list = "power-game-online-players"
     else
@@ -96,7 +96,7 @@ get '/players' do
 end
 
 get "/flush" do
-  if params[:pass] == "power"
+  if params[:pass] == ENV['APP_PASSWORD']
     STORE.clear_all
     "db flushed"
   else
