@@ -6,6 +6,8 @@ require 'webmock/rspec'
 
 set :environment, :test
 
+ENV['APP_PASSWORD'] = "power"
+
 RSpec.configure do |conf|
   conf.include Rack::Test::Methods
 end

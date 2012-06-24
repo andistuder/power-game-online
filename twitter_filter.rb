@@ -13,7 +13,6 @@ end
 query_params = {}
 query_params.merge!(:track => "powergameonline")
 query_params.merge!(:follow => "599169181,292503547") # @pgotest and @powergameonline
-puts query_params
 
 @client = TweetStream::Client.new
 

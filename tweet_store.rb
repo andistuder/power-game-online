@@ -31,8 +31,6 @@ class TweetStore
 
   # @param [Object] data
   def push(data)
-    puts "user ID #{data["userid"]}"
-    puts "players ID #{@players}"
     if @croupiers.include?(data["userid"])
       @db.lpush('function', data.to_json)
       @function_trim_count += 1

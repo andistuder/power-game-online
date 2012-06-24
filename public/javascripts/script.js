@@ -146,7 +146,6 @@ $(document).ready(function(){
                         500:function () {showInfo("db error");}
                     },
                     complete:function (player_tweets) {
-                        console.log
                         var tweet_array = $.parseJSON(player_tweets.responseText);
                         cards.filterPlayerTweets(tweet_array);
                     }

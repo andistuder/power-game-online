@@ -7,7 +7,6 @@
   %nav
     %a{:href => "/how-to-play"} How to Play
     %a{:href => "/credits"} CREDITS
-    -#%a{:href => "http://www.netaudiolondon.org"} netaudio 2011
   %section#croupier
     %h3.sectionTitle MC
     %hr/
@@ -36,13 +35,9 @@
     #players3.column.last
       %p.waiting Waiting for nominations...
 #populate.hidden
--#%script{:src => "/javascripts/test.js"}
 %script{:src => "/javascripts/script.js"}
 :javascript
-  //setTimeout(function(){cards.setNewWords('power hope light')},1);
   var innit_tweets = #{@tweets};
-  //console.log(innit_tweets);
-  //var init_words = []
 /[if lt IE 7 ]
   <script src="js/libs/dd_belatedpng.js"></script>
   <script> DD_belatedPNG.fix('img, .png_bg');</script>
