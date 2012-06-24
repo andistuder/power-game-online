@@ -1,7 +1,13 @@
 require 'tweetstream'
 require File.join(File.dirname(__FILE__), 'tweet_store')
 
-load File.join(File.dirname(__FILE__), 'config/twitter_authentication.rb')
+TweetStream.configure do |config|
+  config.consumer_key    = ENV['TWITTER_CONSUMER_KEY']
+  config.consumer_secret    = ENV['TWITTER_CONSUMER_SECRET']
+  config.oauth_token = ENV['OAUTH_TOKEN']
+  config.oauth_token_secret = ENV['OAUTH_TOKEN_SECRET']
+  config.auth_method        = :oauth
+end
 
 @tweet_store = TweetStore.new
 query_params = {}
