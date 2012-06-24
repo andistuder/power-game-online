@@ -56,7 +56,7 @@ describe "web" do
 
   describe "GET /player-tweets" do
     it "should call the tweets and resolve" do
-      STORE.should_receive(:get_tweet_data).with("power", 15, 0).and_return("")
+      STORE.should_receive(:get_tweet_data).with("power", 10, 0).and_return("")
       get '/player-tweets'
       last_response.should be_ok
     end
