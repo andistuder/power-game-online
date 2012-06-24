@@ -97,7 +97,7 @@ $(document).ready(function(){
 				complete : function(r_tweet){
                     var tweet = $.parseJSON(r_tweet.responseText);
                     cards.processTweet(tweet);
-                    setTimeout(function(){cards.getCroupierTweet()},5e3);
+                    setTimeout(function(){cards.getCroupierTweet()},2e3);
 			    }
 			});
 		},
