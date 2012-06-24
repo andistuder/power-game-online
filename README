@@ -1,58 +1,59 @@
-***Keys***
-you will need to the following twitter keys to your environment:
+*** Keys ***
+
+You will need to the following twitter keys to your environment:
 ENV['TWITTER_CONSUMER_KEY']
 ENV['TWITTER_CONSUMER_SECRET']
 ENV['OAUTH_TOKEN']
 ENV['OAUTH_TOKEN_SECRET']
 
-you will need to set an application password for admin functions (set players and flush database)
+You will need to set an application password for admin functions (to set players and flush database)
 ENV['APP_PASSWORD']
 
-if you use foreman (see below), you can simply add them to an .env file to document root. user the format as follows:
+If you use Foreman (see below), you can simply add them to the .env file in root dir. Format as follows:
 TWITTER_CONSUMER_SECRET=1234567890
 OAUTH_TOKEN_SECRET=1234567890
 OAUTH_TOKEN=14060355-1234567890
 TWITTER_CONSUMER_KEY=1234567890
 APP_PASSWORD=1234567890
 
-***Start Processes***
+*** Start Processes ***
 
 With Foreman
 $ bundle exec foreman start
 default port is 5000
 
-only webserver, with shotgun:
+Only webserver, with shotgun:
 $ bundle exec shotgun web.rb
 
-only twitter filter:
+Only twitter filter:
 $ bundle exec ruby twitter_filter.rb
 
-all need a redis server running, eg.
+All need a redis server running, eg.
 $ redis-server /Volumes/data/dev/redis/redis.conf
 
-see example config file here: https://github.com/antirez/redis/blob/557a74e56308325874c573e6dd2c6b228136de86/redis.conf
+See example config file here: https://github.com/antirez/redis/blob/557a74e56308325874c573e6dd2c6b228136de86/redis.conf
 
 
-***pages***
+*** Pages ***
 
 /
-main game
+Main game
 
 /admin
-to set players
-to see functional tweet formats (needs password)
+To set players
+To see functional tweet formats (needs password)
 
 /players
-see IDs of current players
+See IDs of current players
 
 /power
-see see public tweets
+See see public tweets
 
 /show-errors
-see twitter-filter status messages
+See twitter-filter status messages
 
 /delete-errors
-clear twitter-filter status messages
+Clear twitter-filter status messages
 
 /flush
-flush redis db (needs password)
+Flush redis db (needs password)
