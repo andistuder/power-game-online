@@ -227,7 +227,7 @@ $(document).ready(function(){
 		},
 		gameOver : function(){
 			//TODO restore all original values
-			cards.stopCroupier();
+//			cards.stopCroupier();
 			cards.resetVotes();
 			cards.putOnTable(['<span class="card-word">game</span>','<span class="card-word">has</span>','<span class="card-word">finished</span>']);
 			//$('#players1,#players2,#players3').html('<p class="waiting">Game has finished</p>');
@@ -258,7 +258,8 @@ $(document).ready(function(){
             } else if (_got_end_round) {
                 cards.endRound();
             } else if (_got_game_over) {
-                return cards.gameOver();
+                console.log('Game over');
+//              return cards.gameOver();
             } else {
                 //if we don't find new words log this
                 console.log('Searching for croupier key words, couldn\'nt find anything...');
