@@ -29,9 +29,10 @@ class TweetStore
     }.reject {|t| t.received_at <= since}
   end
 
+  # @param [Object] data
   def push(data)
-    #puts "user ID #{data["userid"]}"
-    #puts "players ID #{@players}"
+    puts "user ID #{data["userid"]}"
+    puts "players ID #{@players}"
     if @croupiers.include?(data["userid"])
       @db.lpush('function', data.to_json)
       @function_trim_count += 1
@@ -39,19 +40,21 @@ class TweetStore
         @db.ltrim('function', 0, NUM_TWEETS)
         @function_trim_count = NUM_TWEETS
       end
-      #@db.set('croupier', data.to_json)
     else
-      @db.lpush('power', data.to_json)
-      @power_trim_count += 1
-      if @power_trim_count > TRIM_THRESHOLD
-        @db.ltrim('power', 0, NUM_TWEETS)
-        @power_trim_count = NUM_TWEETS
-      end
-      @db.lpush('public', data.to_json)
-      @public_trim_count += 1
-      if @public_trim_count > TRIM_THRESHOLD
-        @db.ltrim('public', 0, NUM_TWEETS)
-        @public_trim_count = NUM_TWEETS
+      if @players.include?(data["userid"])
+        @db.lpush('power', data.to_json)
+        @power_trim_count += 1
+        if @power_trim_count > TRIM_THRESHOLD
+          @db.ltrim('power', 0, NUM_TWEETS)
+          @power_trim_count = NUM_TWEETS
+        end
+      else
+        @db.lpush('public', data.to_json)
+        @public_trim_count += 1
+        if @public_trim_count > TRIM_THRESHOLD
+          @db.ltrim('public', 0, NUM_TWEETS)
+          @public_trim_count = NUM_TWEETS
+        end
       end
     end
   end
@@ -63,7 +66,7 @@ class TweetStore
   def get_tweet_data(key="power", limit=15, since=0)
     @db.lrange(key, 0, limit - 1).reject {|t|
       JSON.parse(t)["received_at"] <= since
-    }
+    }.reverse
     #TODO maybe write to parse proper?
   end
 

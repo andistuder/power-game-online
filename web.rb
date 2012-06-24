@@ -14,7 +14,7 @@ configure do
 end
 
 get '/' do
-  @tweets = STORE.get_tweet_data('function', 4).reverse
+  @tweets = STORE.get_tweet_data('function', 5)
   haml :index
 end
 
@@ -96,5 +96,10 @@ get '/players' do
 end
 
 get "/flush" do
-  STORE.clear_all
+  if params[:pass] == "power"
+    STORE.clear_all
+    "db flushed"
+  else
+    "meh."
+  end
 end
