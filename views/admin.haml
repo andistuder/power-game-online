@@ -15,7 +15,7 @@
         %li [...] choose most powerful word [...]
         %li [...] vote now [...]
         %li End round x, the post powerful word is word2
-        %li (return to 1 or) Game Over
+        %li (return to 1 or game over)
     %section.guide
       %h2 Set players
       %form#set_players{:action => "/set-players", :method => "get"}
@@ -32,3 +32,4 @@
         %br
         %br
         %input#submit_players.button{:type => "submit", :value => "Submit"}
+      %p Note: it requires a worker process restart for the changes to take effect.

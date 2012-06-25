@@ -153,20 +153,23 @@ $(document).ready(function(){
             }, 200);
         },
 		filterPlayerTweets : function(results){
-			var words = cards.words;
-			for(i=0;i<results.length;i++){
-                var result = $.parseJSON(results[i]);
-				if(searchTweet(result.text, "#"+words[0])){
-					renderPlayerTweet($pCol1, result);
-				}
-				if(searchTweet(result.text, "#"+words[1])){
-					renderPlayerTweet($pCol2, result);
-				}
-				if(searchTweet(result.text, "#"+words[2])){
-					renderPlayerTweet($pCol3, result);
-				}
-                cards.playersTweetTime = result.received_at;
-			}
+			if(cards.words != null){
+                var words = cards.words;
+                for(i=0;i<results.length;i++){
+                    var result = $.parseJSON(results[i]);
+    				if(searchTweet(result.text, "#"+words[0])){
+    					renderPlayerTweet($pCol1, result);
+    				}
+    				if(searchTweet(result.text, "#"+words[1])){
+    					renderPlayerTweet($pCol2, result);
+    				}
+    				if(searchTweet(result.text, "#"+words[2])){
+    					renderPlayerTweet($pCol3, result);
+    				}
+                    cards.playersTweetTime = result.received_at;
+    			}
+            }
+
 		},
 		startPublicSearch : function(words){
 			setTimeout(function(){
@@ -185,21 +188,24 @@ $(document).ready(function(){
 			},300);
 		},
 		checkVotes : function (results)	{
-			var words = cards.words;
-			for(i=0;i<results.length;i++){
-                var result = $.parseJSON(results[i]);
-				if(searchTweet(result.text, "#"+words[0])){
-					cards.voteCount.word1++;
-				}
-				if(searchTweet(result.text, "#"+words[1])){
-					cards.voteCount.word2++;
-				}
-				if(searchTweet(result.text, "#"+words[2])){
-					cards.voteCount.word3++;
-				}
-                cards.searchTweetId = result.received_at;
-			}
-			cards.setVotes();
+			if(cards.words!=null){
+
+                var words = cards.words;
+    			for(i=0;i<results.length;i++){
+                    var result = $.parseJSON(results[i]);
+    				if(searchTweet(result.text, "#"+words[0])){
+    					cards.voteCount.word1++;
+    				}
+    				if(searchTweet(result.text, "#"+words[1])){
+    					cards.voteCount.word2++;
+    				}
+    				if(searchTweet(result.text, "#"+words[2])){
+    					cards.voteCount.word3++;
+    				}
+                    cards.searchTweetId = result.received_at;
+    			}
+    			cards.setVotes();
+            }
 		},
 		setVotes : function(){
     		//TODO refactor this horribly inefficient function
@@ -285,7 +291,7 @@ $(document).ready(function(){
         setTimeout(function () {
             hideInfo();
             cards.getCroupierTweet();
-        }, 10e3);
+        }, 8e3);
     }
     init();
 });
