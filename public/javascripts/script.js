@@ -256,7 +256,7 @@ $(document).ready(function(){
                 _got_players_last_call = searchTweet(mostRecent, cards.players_last_call),
                 _got_public_vote_now = searchTweet(mostRecent, cards.public_vote_search),
                 _got_end_round = searchTweet(mostRecent, cards.end_round_search),
-                _got_of_end_round = searchTweet(mostRecent, cards.end__of_round_search),
+                _got_end_of_round = searchTweet(mostRecent, cards.end_of_round_search),
                 _got_game_over = searchTweet(mostRecent, cards.game_over_search);
 
             if (_got_new_words || _new_words_colon) {
