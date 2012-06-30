@@ -78,6 +78,7 @@ $(document).ready(function(){
 		players_last_call : 'last call',
 		public_vote_search : 'vote now',
 		end_round_search : 'end round',
+		end_of_round_search : 'end of round',
 		game_over_search : 'game over',
         first_vote_call : false,
 		returnCardHtml : function(word){
@@ -255,6 +256,7 @@ $(document).ready(function(){
                 _got_players_last_call = searchTweet(mostRecent, cards.players_last_call),
                 _got_public_vote_now = searchTweet(mostRecent, cards.public_vote_search),
                 _got_end_round = searchTweet(mostRecent, cards.end_round_search),
+                _got_of_end_round = searchTweet(mostRecent, cards.end__of_round_search),
                 _got_game_over = searchTweet(mostRecent, cards.game_over_search);
 
             if (_got_new_words || _new_words_colon) {
@@ -273,7 +275,7 @@ $(document).ready(function(){
                 }
                 cards.startPublicSearch(cards.words);
                 cards.first_vote_call = true;
-            } else if (_got_end_round) {
+            } else if (_got_end_round || _got_end_of_round) {
                 cards.endRound();
             } else if (_got_game_over) {
                 console.log('Game over');
