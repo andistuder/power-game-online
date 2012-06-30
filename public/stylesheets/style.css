@@ -118,8 +118,8 @@ header{float: left;}
 
 
 h1#pg-title{font: 56px/68px 'BebasNeueRegular', sans-serif;letter-spacing: 1px;color:#cd010b;float:left}
-h1#pg-title a{color:#cd010b;text-decoration: none}
-h1#pg-title a:hover{color:white;}
+h1#pg-title a, a.red {color:#cd010b;text-decoration: none}
+h1#pg-title a:hover, a.red:hover{color:white;}
 h2#lili{font: 30px/46px 'BebasNeueRegular', sans-serif;letter-spacing: 1px;color:#cd010b;float:left;margin-left: 20px}
 
 
@@ -131,8 +131,9 @@ nav a:hover, nav a.active-heading{color:white}
 /* Articles */
 
 article{border-top:1px solid white; border-bottom: 1px solid white; margin-top: 1px solid white; clear: both;float: left;padding: 0 20px 10px 0;text-align: left;width: 920px; overflow: auto;margin-bottom: 20px}
-
-.credit,.guide{margin:10px 0px;border-bottom: 1px solid white;padding-bottom: 10px;width: 555px;color: white;line-height: 1.5em}
+article#credits{padding-top: 10px}
+.credit,.guide{padding-bottom: 10px;width: 555px;color: white;line-height: 1.5em}
+.guide{margin:10px 0px;border-bottom: 1px solid white;}
 a.link,a.link:visited{color:lightBlue;font-size: 16px;}
 a.link:hover,a.link:visited:hover{color: white}
 

@@ -71,13 +71,15 @@ $(document).ready(function(){
 		placeholder : $('#populate'),
 		$cardword : $('.card-word'),
 		playersTweetTime : null,
-		searchTweetId : null,
+		searchTweetTime : null,
 		new_words_search : 'new words',		
 		with_colon : 'new words:',		
 		players_choose_search : 'choose most powerful word',
+		players_last_call : 'last call',
 		public_vote_search : 'vote now',
 		end_round_search : 'end round',
 		game_over_search : 'game over',
+        first_vote_call : false,
 		returnCardHtml : function(word){
 			var cardHtml = '<span class="card-word">'+word+'</span>';
 			cardHtml += '<span class="vote-count"></span>';
@@ -174,7 +176,7 @@ $(document).ready(function(){
 		startPublicSearch : function(words){
 			setTimeout(function(){
                 $.ajax({
-   			 	    url: site_url + 'public-tweets?since=' + cards.searchTweetId,
+   			 	    url: site_url + 'public-tweets?since=' + cards.searchTweetTime,
    			 	    dataType : "json",
    				    statusCode : {
                         400:function () {showInfo("rate limit hit");},
@@ -202,7 +204,7 @@ $(document).ready(function(){
     				if(searchTweet(result.text, "#"+words[2])){
     					cards.voteCount.word3++;
     				}
-                    cards.searchTweetId = result.received_at;
+                    cards.searchTweetTime = result.received_at;
     			}
     			cards.setVotes();
             }
@@ -221,14 +223,15 @@ $(document).ready(function(){
 		stopCroupier : function(){
 			return cards.getCroupierTweet(true); // param is 'stop' === true, to stop croupier tweets searches.
 		},
+        resetPlayers : function() {
+            $pCol1.html('<p class="waiting">Waiting for nominations...</p>');
+            $pCol2.html('<p class="waiting">Waiting for nominations...</p>');
+         	$pCol3.html('<p class="waiting">Waiting for nominations...</p>');
+        },
 		endRound : function (){
-//			cards.stopPublicSearch();
-//			cards.stopPlayers();
 			cards.resetVotes();
+            cards.resetPlayers();
 			$('.card').html('<p class="waiting">Waiting for new words...</p>');
-			$pCol1.html('<p class="waiting">Waiting for nominations...</p>');
-			$pCol2.html('<p class="waiting">Waiting for nominations...</p>');
-			$pCol3.html('<p class="waiting">Waiting for nominations...</p>');
 			showInfo("Round has finished, waiting for new words...");
 		},
 		gameOver : function(){
@@ -248,19 +251,26 @@ $(document).ready(function(){
             var _got_new_words = searchTweet(mostRecent, cards.new_words_search),
                 _new_words_colon = searchTweet(mostRecent, cards.with_colon),
                 _got_players_choose_words = searchTweet(mostRecent, cards.players_choose_search),
+                _got_players_last_call = searchTweet(mostRecent, cards.players_last_call),
                 _got_public_vote_now = searchTweet(mostRecent, cards.public_vote_search),
                 _got_end_round = searchTweet(mostRecent, cards.end_round_search),
                 _got_game_over = searchTweet(mostRecent, cards.game_over_search);
 
             if (_got_new_words || _new_words_colon) {
+                cards.resetVotes();
+                cards.resetPlayers();
                 cards.setNewWords(mostRecent);
                 cards.playersTweetTime = tweet.received_at;
-            } else if (_got_players_choose_words) {
+            } else if (_got_players_choose_words || _got_players_last_call) {
                 cards.startPlayers();
-                cards.searchTweetId = tweet.received_at;
+                cards.searchTweetTime = tweet.received_at;
             } else if (_got_public_vote_now) {
                 //Start searching public votes
+                if(cards.first_vote_call == false){
+                    cards.searchTweetTime = tweet.received_at;
+                }
                 cards.startPublicSearch(cards.words);
+                cards.first_vote_call = true;
             } else if (_got_end_round) {
                 cards.endRound();
             } else if (_got_game_over) {

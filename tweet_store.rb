@@ -46,13 +46,12 @@ class TweetStore
           @db.ltrim('power', 0, NUM_TWEETS)
           @power_trim_count = NUM_TWEETS
         end
-      else
-        @db.lpush('public', data.to_json)
-        @public_trim_count += 1
-        if @public_trim_count > TRIM_THRESHOLD
-          @db.ltrim('public', 0, NUM_TWEETS)
-          @public_trim_count = NUM_TWEETS
-        end
+      end
+      @db.lpush('public', data.to_json)
+      @public_trim_count += 1
+      if @public_trim_count > TRIM_THRESHOLD
+        @db.ltrim('public', 0, NUM_TWEETS)
+        @public_trim_count = NUM_TWEETS
       end
     end
   end

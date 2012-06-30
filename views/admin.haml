@@ -11,11 +11,31 @@
     %section.guide
       %h2 Functional Tweets
       %ol
-        %li new words: word1 word2 word3
-        %li [...] choose most powerful word [...]
-        %li [...] vote now [...]
-        %li End round x, the post powerful word is word2
-        %li (return to 1 or game over)
+        %li
+          %h3 new words: word1 word2 word3
+          %ul
+            %li Do NOT add any other words to this tweet.
+            %li eg. New words: Sun Moon Star
+        %li
+          %h3 [...] choose most powerful word [...]
+          %ul
+            %li eg. Players please choose most powerful word from Sun Moon Star
+        %li
+          %h3 [...] last call [...]
+          %ul
+            %li Optional tweet
+            %li eg. Last call for players word nominations
+        %li
+          %h3 [...] vote now [...]
+          %ul
+            %li eg. Public can vote now
+        %li
+          %h3 [...] end round [...]
+          %ul
+            %li eg. End round 2, the most powerful word is Sun
+        %li
+          %h3 (return to 1 or game over)
+      %p Notes: The word string must be in tweet in shown order, but can be prepended/appended by additional words. Capitalization is irrelevant.
     %section.guide
       %h2 Set players
       %form#set_players{:action => "/set-players", :method => "get"}
