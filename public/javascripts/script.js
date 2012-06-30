@@ -218,6 +218,7 @@ $(document).ready(function(){
 		},
 		resetVotes : function(){
             $('.vote-count').empty();
+            cards.first_vote_call = false;
 			return cards.voteCount = {word1:0,word2:0,word3:0};
 		},
 		stopCroupier : function(){
@@ -229,9 +230,9 @@ $(document).ready(function(){
          	$pCol3.html('<p class="waiting">Waiting for nominations...</p>');
         },
 		endRound : function (){
-			cards.resetVotes();
-            cards.resetPlayers();
-			$('.card').html('<p class="waiting">Waiting for new words...</p>');
+//			cards.resetVotes();
+//            cards.resetPlayers();
+//			$('.card').html('<p class="waiting">Waiting for new words...</p>');
 			showInfo("Round has finished, waiting for new words...");
 		},
 		gameOver : function(){
@@ -267,6 +268,7 @@ $(document).ready(function(){
             } else if (_got_public_vote_now) {
                 //Start searching public votes
                 if(cards.first_vote_call == false){
+
                     cards.searchTweetTime = tweet.received_at;
                 }
                 cards.startPublicSearch(cards.words);
